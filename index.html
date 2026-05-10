@@ -1,57 +1,740 @@
 <!DOCTYPE html>
-  <html lang="ko">
-  <head>
+<html lang="ko">
+<head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#3F5A8A">
   <meta name="google-site-verification" content="MjCRUHhkE1rqtLBkik4FT-tBmEp-wlEEoOAJxcVYTBw" />
-  <title>여긴 어땠지? (Echoes)</title>
+  <title>여긴 어땠지? — 그 자리에 음성 한 점, 컬러 한 점을 묻어두는 비공개 시간 캡슐 다이어리</title>
+  <meta name="description" content="걷다가 멈춘 자리에 1초 이상의 음성과 컬러를 묻어두면, 정해둔 시점에 지금의 내가 알림으로 도착하는 비공개 시간 캡슐 다이어리.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="여긴 어땠지? (Echoes)">
+  <meta property="og:description" content="그 자리에 음성 한 점, 컬러 한 점. 비공개 시간 캡슐 다이어리.">
+  <meta property="og:image" content="https://echoesdiary.co.kr/assets/screenshots/1.jpg">
+  <meta property="og:url" content="https://echoesdiary.co.kr/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://echoesdiary.co.kr/">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 720px; margin: 40px auto; padding: 20px;   
-  line-height: 1.7; color: #333; }
-    h1 { color: #4A7BD8; }
-    h2 { margin-top: 32px; color: #555; }
-    a { color: #4A7BD8; }
-    hr { margin: 40px 0; border: none; border-top: 1px solid #eee; }
-    blockquote { border-left: 4px solid #4A7BD8; padding-left: 16px; color: #666; font-style: italic; margin: 24px 0; }
+    :root {
+      --c-bg: #F5F6FB;
+      --c-bg-2: #ECEEF8;
+      --c-surface: #FFFFFF;
+      --c-soft: #E8EDF8;
+      --c-primary: #3F5A8A;
+      --c-primary-hover: #34497A;
+      --c-text: #1F2236;
+      --c-text-soft: #6B7390;
+      --c-border: #E4E7F2;
+      --shadow-soft: 0 4px 24px rgba(50, 65, 120, 0.06);
+      --shadow-mid: 0 14px 40px rgba(50, 65, 120, 0.12);
+      --r-card: 20px;
+      --r-pill: 9999px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto, sans-serif;
+      color: var(--c-text);
+      background: var(--c-surface);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    table { border-collapse: collapse; }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s ease;
+    }
+    .site-header.scrolled { border-bottom-color: var(--c-border); }
+    .nav { height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
+    .brand-mark {
+      width: 32px; height: 32px;
+      border-radius: 9999px;
+      background: var(--c-primary);
+      display: grid; place-items: center;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(63, 90, 138, 0.25);
+    }
+    .nav-links { display: flex; gap: 28px; font-size: 15px; color: var(--c-text-soft); }
+    .nav-links a { transition: color .15s; }
+    .nav-links a:hover { color: var(--c-text); }
+    .nav-cta {
+      background: var(--c-primary); color: #fff;
+      padding: 9px 18px; border-radius: var(--r-pill);
+      font-size: 14px; font-weight: 600;
+      transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--c-primary-hover); }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(79, 123, 200, 0.10), transparent 60%),
+        radial-gradient(900px 500px at -10% 30%, rgba(110, 93, 154, 0.08), transparent 60%),
+        var(--c-bg);
+      padding: 88px 0 110px;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .section-eyebrow {
+      color: var(--c-primary); font-size: 13px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      margin-bottom: 14px; display: inline-block;
+    }
+    .hero h1 {
+      font-size: clamp(34px, 5.2vw, 56px);
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+      font-weight: 800;
+      margin-bottom: 22px;
+    }
+    .hero h1 .accent { color: var(--c-primary); }
+    .hero .lead {
+      font-size: 18px;
+      color: var(--c-text-soft);
+      margin-bottom: 32px;
+      max-width: 480px;
+      line-height: 1.7;
+    }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 26px;
+      font-weight: 600; font-size: 15px;
+      border-radius: var(--r-pill);
+      border: 1px solid transparent;
+      transition: transform .15s ease, background .15s, border-color .15s, color .15s;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--c-primary); color: #fff; }
+    .btn-primary:hover { background: var(--c-primary-hover); }
+    .btn-ghost { background: var(--c-surface); color: var(--c-text); border-color: var(--c-border); }
+    .btn-ghost:hover { border-color: var(--c-primary); color: var(--c-primary); }
+    .hero .meta { margin-top: 18px; font-size: 13px; color: var(--c-text-soft); }
+
+    /* Floating dots */
+    .dots-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .dots-bg span { position: absolute; border-radius: 50%; opacity: .35; }
+
+    /* Phone mockup */
+    .step-phone { display: grid; place-items: center; }
+    .phone-frame {
+      width: min(300px, 100%);
+      aspect-ratio: 36 / 71;
+      background: #1F2236;
+      border-radius: 42px;
+      padding: 11px;
+      box-shadow: var(--shadow-mid);
+    }
+    .phone-frame > .screen {
+      width: 100%; height: 100%;
+      border-radius: 31px;
+      overflow: hidden;
+      background: var(--c-bg);
+    }
+    .phone-frame img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+
+    /* Why section */
+    .why { background: var(--c-surface); padding: 96px 0; text-align: center; }
+    .why blockquote {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.45;
+      color: var(--c-text);
+      max-width: 700px;
+      margin: 18px auto 26px;
+      position: relative;
+      padding: 0 44px;
+    }
+    .why blockquote::before, .why blockquote::after {
+      position: absolute;
+      font-size: 56px; line-height: 1;
+      color: var(--c-primary); opacity: 0.28;
+      font-family: 'Times New Roman', Georgia, serif;
+    }
+    .why blockquote::before { content: '\201C'; top: -10px; left: 4px; }
+    .why blockquote::after { content: '\201D'; bottom: -28px; right: 4px; }
+    .why p {
+      color: var(--c-text-soft);
+      font-size: 17px; line-height: 1.75;
+      max-width: 560px; margin: 0 auto;
+    }
+
+    /* Sections */
+    section { padding: 100px 0; }
+    .section-head { text-align: center; margin-bottom: 60px; }
+    .section-head h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .section-head p { color: var(--c-text-soft); font-size: 17px; max-width: 600px; margin: 0 auto; }
+
+    /* Features */
+    .features { background: var(--c-bg); }
+    .feature-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .feature-card {
+      background: var(--c-surface);
+      border-radius: var(--r-card);
+      padding: 36px 30px;
+      border: 1px solid var(--c-border);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+    .feature-icon {
+      width: 72px; height: 72px;
+      background: var(--c-soft);
+      border-radius: 50%;
+      display: grid; place-items: center;
+      margin-bottom: 22px;
+      color: var(--c-primary);
+    }
+    .feature-card h3 {
+      font-size: 21px; font-weight: 700;
+      margin-bottom: 10px; letter-spacing: -0.015em;
+    }
+    .feature-card p { color: var(--c-text-soft); font-size: 15px; line-height: 1.7; }
+
+    /* Walkthrough */
+    .steps { padding-bottom: 120px; }
+    .step {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-bottom: 100px;
+    }
+    .step:last-child { margin-bottom: 0; }
+    .step.reverse > .step-text { order: 2; }
+    .step.reverse > .step-phone { order: 1; }
+    .step-num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--c-primary);
+      color: #fff;
+      display: grid; place-items: center;
+      font-weight: 700; font-size: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 16px rgba(63, 90, 138, 0.3);
+    }
+    .step h3 {
+      font-size: clamp(22px, 2.6vw, 30px);
+      line-height: 1.3; letter-spacing: -0.02em;
+      font-weight: 800; margin-bottom: 14px;
+    }
+    .step p { color: var(--c-text-soft); font-size: 16px; max-width: 440px; line-height: 1.75; }
+
+    /* Color section */
+    .colors { background: var(--c-bg); padding: 110px 0; text-align: center; }
+    .colors p.lead { color: var(--c-text-soft); font-size: 17px; max-width: 560px; margin: 14px auto 0; }
+    .color-row {
+      display: flex; justify-content: center; gap: 18px; margin-top: 44px; flex-wrap: wrap;
+    }
+    .color-dot {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 6px solid #fff;
+      box-shadow: 0 4px 14px rgba(0,0,0,.06);
+      transition: transform .25s ease;
+    }
+    .color-dot:hover { transform: scale(1.08); }
+
+    /* Pro */
+    .pro-card {
+      max-width: 760px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #F5F6FB 0%, #E5E9F4 100%);
+      border-radius: 28px;
+      padding: 56px 48px;
+      text-align: center;
+      border: 1px solid var(--c-border);
+    }
+    .pro-badge {
+      display: inline-block;
+      background: var(--c-primary); color: #fff;
+      padding: 6px 16px; border-radius: 9999px;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+      margin-bottom: 18px;
+    }
+    .pro-card h2 {
+      font-size: clamp(26px, 3.4vw, 34px);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.3;
+    }
+    .pro-card .lead { color: var(--c-text-soft); font-size: 16px; margin-top: 12px; }
+    .pro-table {
+      margin: 32px 0 24px;
+      background: var(--c-surface);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--c-border);
+    }
+    .pro-table table { width: 100%; }
+    .pro-table th, .pro-table td {
+      padding: 16px 20px; text-align: left; font-size: 15px;
+      border-bottom: 1px solid var(--c-border);
+    }
+    .pro-table tr:last-child th, .pro-table tr:last-child td { border-bottom: none; }
+    .pro-table th { background: #F8F9FC; font-weight: 600; color: var(--c-text-soft); font-size: 13px; letter-spacing: 0.02em; text-transform: uppercase; }
+    .pro-table td:nth-child(1) { font-weight: 600; }
+    .pro-table td:nth-child(2) { color: var(--c-text-soft); }
+    .pro-table td:nth-child(3) { color: var(--c-primary); font-weight: 700; }
+    .pro-price { font-size: 16px; color: var(--c-text-soft); }
+    .pro-price strong { color: var(--c-text); font-size: 22px; font-weight: 800; margin-right: 6px; }
+
+    .price-tiers {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-top: 28px;
+    }
+    .price-tier {
+      background: var(--c-surface);
+      border: 1.5px solid var(--c-border);
+      border-radius: 16px;
+      padding: 22px 16px 20px;
+      text-align: center;
+      position: relative;
+      transition: border-color .2s ease, transform .2s ease;
+    }
+    .price-tier:hover { transform: translateY(-2px); }
+    .price-tier.popular { border-color: var(--c-primary); }
+    .price-tier.popular::before {
+      content: '추천';
+      position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+      background: var(--c-primary); color: #fff;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      padding: 4px 12px; border-radius: 9999px;
+    }
+    .price-tier .label { font-size: 13px; color: var(--c-text-soft); font-weight: 600; margin-bottom: 10px; }
+    .price-tier .amount { font-size: 22px; font-weight: 800; color: var(--c-text); letter-spacing: -0.02em; }
+    .price-tier .amount small { font-size: 13px; font-weight: 500; color: var(--c-text-soft); margin-left: 3px; }
+    .price-tier .note { font-size: 12px; color: var(--c-text-soft); margin-top: 8px; line-height: 1.5; }
+    @media (max-width: 600px) {
+      .price-tiers { grid-template-columns: 1fr; gap: 14px; margin-top: 32px; }
+    }
+
+    /* Privacy */
+    .privacy-section { background: var(--c-bg); }
+    .privacy-grid {
+      display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: center;
+    }
+    .privacy-grid h2 {
+      font-size: clamp(28px, 3.6vw, 38px);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.3;
+    }
+    .privacy-grid > div > p {
+      color: var(--c-text-soft); font-size: 17px; margin-top: 18px; max-width: 420px; line-height: 1.75;
+    }
+    .privacy-list { display: grid; gap: 14px; }
+    .privacy-item {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--c-surface);
+      padding: 20px 22px;
+      border-radius: 16px;
+      border: 1px solid var(--c-border);
+    }
+    .privacy-item .icon {
+      color: var(--c-primary);
+      flex-shrink: 0; margin-top: 2px;
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--c-soft);
+      display: grid; place-items: center;
+    }
+    .privacy-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .privacy-item p { font-size: 14px; color: var(--c-text-soft); line-height: 1.6; }
+    .privacy-item p a { color: var(--c-primary); text-decoration: underline; text-underline-offset: 2px; }
+
+    /* Final CTA */
+    .cta-final {
+      background: linear-gradient(135deg, #3F5A8A 0%, #5774A6 100%);
+      color: #fff;
+      padding: 110px 0; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-final::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(600px 300px at 20% 20%, rgba(255,255,255,0.10), transparent 60%);
+      pointer-events: none;
+    }
+    .cta-final h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.25;
+      margin-bottom: 18px;
+    }
+    .cta-final p { font-size: 17px; opacity: .85; margin-bottom: 36px; }
+    .cta-final .cta-row { justify-content: center; }
+    .cta-final .btn-primary { background: #fff; color: var(--c-primary); }
+    .cta-final .btn-primary:hover { background: #F5F6FB; }
+    .cta-final .btn-ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+    .cta-final .btn-ghost:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.06); }
+
+    /* Footer */
+    .footer {
+      background: #15172A; color: #9DA3BD;
+      padding: 56px 0 44px;
+      font-size: 14px;
+    }
+    .footer-row {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { transition: color .15s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-brand { color: #fff; font-weight: 700; letter-spacing: -0.01em; }
+    .footer-brand small { color: #9DA3BD; font-weight: 400; margin-left: 6px; font-size: 13px; }
+    .footer-meta { font-size: 13px; opacity: .55; margin-top: 18px; }
+
+    /* Mobile */
+    @media (max-width: 880px) {
+      section { padding: 72px 0; }
+      .hero { padding: 56px 0 80px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; text-align: center; }
+      .hero .lead { margin-left: auto; margin-right: auto; }
+      .cta-row { justify-content: center; }
+      .nav-links { display: none; }
+      .feature-grid { grid-template-columns: 1fr; gap: 16px; }
+      .step { grid-template-columns: 1fr; gap: 40px; margin-bottom: 72px; text-align: center; }
+      .step.reverse > .step-text { order: 0; }
+      .step.reverse > .step-phone { order: 0; }
+      .step p { margin-left: auto; margin-right: auto; }
+      .step-num { margin-left: auto; margin-right: auto; }
+      .privacy-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+      .privacy-grid > div > p { margin-left: auto; margin-right: auto; }
+      .privacy-item { text-align: left; }
+      .pro-card { padding: 40px 24px; }
+      .footer-row { justify-content: center; text-align: center; }
+      .footer-meta { text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
   </style>
-  </head>
-  <body>
+</head>
+<body>
 
-  <h1>여긴 어땠지? (Echoes)</h1>
+  <header class="site-header" id="siteHeader">
+    <div class="container nav">
+      <a href="#" class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/></svg>
+        </span>
+        여긴 어땠지?
+      </a>
+      <nav class="nav-links" aria-label="섹션 이동">
+        <a href="#features">기능</a>
+        <a href="#how">사용법</a>
+        <a href="#pro">Pro</a>
+        <a href="#privacy">개인정보</a>
+      </nav>
+      <a href="mailto:echoes.diary.contact@gmail.com?subject=%EC%B6%9C%EC%8B%9C%20%EC%95%8C%EB%A6%BC%20%EB%B0%9B%EA%B8%B0" class="nav-cta">알림 받기</a>
+    </div>
+  </header>
 
-  <p><strong>비공개 시간 캡슐 다이어리</strong> — 걷다가 멈춘 자리에서 음성과 컬러 한 점을 묻으면, 며칠 뒤·1년 뒤의 내가 다시 만나는 1인용 다이어리 앱입니다.</p>
+  <section class="hero">
+    <div class="dots-bg" aria-hidden="true">
+      <span style="width:14px;height:14px;background:#E8B43F;top:18%;left:6%;"></span>
+      <span style="width:10px;height:10px;background:#4F7BC8;top:34%;left:13%;"></span>
+      <span style="width:18px;height:18px;background:#95B7A2;top:62%;left:5%;"></span>
+      <span style="width:12px;height:12px;background:#C988B7;top:80%;left:16%;"></span>
+      <span style="width:14px;height:14px;background:#D38858;top:14%;right:38%;"></span>
+      <span style="width:10px;height:10px;background:#A85042;top:72%;right:8%;"></span>
+      <span style="width:16px;height:16px;background:#6E5D9A;top:36%;right:5%;"></span>
+      <span style="width:12px;height:12px;background:#D88A9E;top:88%;right:34%;"></span>
+    </div>
+    <div class="container hero-grid">
+      <div>
+        <span class="section-eyebrow">비공개 시간 캡슐 다이어리</span>
+        <h1>지금 이 자리에 묻어두면<br><span class="accent">1년 뒤의 내가</span> 들어요</h1>
+        <p class="lead">걷다가 멈춘 자리에 1초 이상의 음성과 컬러 한 점을 묻어두세요. 며칠 뒤·1년 뒤, 정해둔 그 순간이 알림으로 다시 찾아와요.</p>
+        <div class="cta-row">
+          <a href="mailto:echoes.diary.contact@gmail.com?subject=%EC%B6%9C%EC%8B%9C%20%EC%95%8C%EB%A6%BC%20%EB%B0%9B%EA%B8%B0" class="btn btn-primary">
+            출시 알림 받기
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="#features" class="btn btn-ghost">기능 둘러보기</a>
+        </div>
+        <p class="meta">Android · Google Play 출시 예정</p>
+      </div>
+      <div class="step-phone">
+        <div class="phone-frame">
+          <div class="screen"><img src="assets/screenshots/1.jpg" alt="여긴 어땠지? 지도 화면 — 묻어둔 음성들이 컬러 dot으로 표시됨"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <h2>어떤 앱인가요?</h2>
-  <ul>
-    <li><strong>장소에 음성을 묻는다</strong>: 1초부터 자유롭게 녹음한 음성을 그 자리의 좌표와 함께 남깁니다.</li>
-    <li><strong>본인만 듣는다</strong>: 묻은 다이어리는 본인 외에 누구에게도 공개되지 않습니다 (비공개).</li>
-    <li><strong>어디서든 듣는다</strong>: 본인이 묻은 다이어리는 거리와 무관하게 언제든 재생됩니다.</li>
-    <li><strong>시간 캡슐</strong>: 1시간 / 1일 / 1주 / 1달 / 1년 / 자유 시점에 자동으로 다시 열립니다.</li>
-    <li><strong>회고 알림</strong>: 캡슐이 열리는 그 순간 알림으로 도착합니다.</li>
-    <li><strong>컬러 · 캡션 · 사진</strong>: 8가지 컬러 dot, 짧은 메모, 사진 한 장을 함께 묻을 수 있습니다 (선택).</li>
-    <li><strong>음성 → 텍스트 변환</strong>: 묻어둔 음성을 다국어 자동 인식으로 텍스트로 변환합니다.</li>
-  </ul>
+  <section class="why">
+    <div class="container">
+      <span class="section-eyebrow">WHY</span>
+      <blockquote>여기 와본 적 있나? 그때 어떤 기분이었지?</blockquote>
+      <p>일상에서 잠깐 스쳤던 순간의 감정을, 그 자리의 좌표와 함께 남겨두는 사적 기록 도구.</p>
+    </div>
+  </section>
 
-  <h2>왜 만들었나요?</h2>
-  <blockquote>
-    "여기 와본 적 있나? 그때 어떤 기분이었지?"<br>
-    일상에서 잠깐 스쳤던 순간의 감정을, 그 자리의 좌표와 함께 남겨두는 사적 기록 도구.
-  </blockquote>
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-eyebrow">CORE</span>
+        <h2>그 자리, 그 순간에<br>음성 한 점을 묻어두세요</h2>
+        <p>녹음하고, 장소로 기억하고, 시간을 건너 다시 만나기까지 — 다이어리에 필요한 모든 흐름이 한 곳에.</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="22"/></svg>
+          </div>
+          <h3>지금 이 자리에 묻어두세요</h3>
+          <p>마이크 한 번에 1초부터 자유롭게 녹음. 목소리든, 주변 소리든 그 순간 그대로 묻어둘 수 있어요.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+          </div>
+          <h3>장소로 기억해요</h3>
+          <p>걷던 자리, 멈춰선 자리 모두 나만의 기억 지도. 컬러 dot이 그날의 기분을, 사진 한 장이 그날의 풍경을 담아요.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+          </div>
+          <h3>시간 캡슐로 미래에 보내요</h3>
+          <p>1시간·1일·1주·1달·1년·자유 시점까지. 정해둔 그 시점에 자동으로 다시 열리고, 알림으로 도착해요.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3>어디서든 다시 들을 수 있어요</h3>
+          <p>본인이 묻은 다이어리는 거리와 무관하게 언제든 재생. 그 자리에 다시 가지 않아도, 어디서든 꺼내 들을 수 있어요.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <h3>회고 알림으로 다시 도착</h3>
+          <p>캡슐이 열리는 그 순간 알림으로 도착해, 잊고 있던 그날을 자연스럽게 다시 꺼내드려요.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="13" y2="18"/></svg>
+          </div>
+          <h3>음성을 텍스트로</h3>
+          <p>묻어둔 음성을 다국어 자동 인식으로 텍스트 변환. 검색하고 다시 읽기까지 자연스럽게 이어져요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <h2>설치</h2>
-  <p>Google Play Store: (출시 후 링크 추가)</p>
+  <section class="steps" id="how">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-eyebrow">HOW IT WORKS</span>
+        <h2>이렇게 사용해요</h2>
+        <p>설명서가 필요 없어요. 마이크 한 번이면 충분합니다.</p>
+      </div>
 
-  <h2>개인정보처리방침</h2>
-  <p><a href="privacy.html">개인정보처리방침 보기</a></p>
+      <div class="step">
+        <div class="step-text">
+          <div class="step-num">1</div>
+          <h3>걷다가 멈춘 자리에서<br>마이크를 눌러요</h3>
+          <p>지도 위 어디든 마이크 버튼 한 번. 1초부터 자유롭게 녹음돼요. 굳이 말 안 해도 돼요 — 파도, 바람, 카페 소리도 좋습니다.</p>
+        </div>
+        <div class="step-phone">
+          <div class="phone-frame"><div class="screen"><img src="assets/screenshots/1.jpg" alt="지도 화면에서 마이크 버튼 누르기"></div></div>
+        </div>
+      </div>
 
-  <h2>문의</h2>
-  <ul>
-    <li>이메일: <a href="mailto:echoes.diary.contact@gmail.com">echoes.diary.contact@gmail.com</a></li>
-    <li>개발자: 1인 개발 (개인)</li>
-  </ul>
+      <div class="step reverse">
+        <div class="step-text">
+          <div class="step-num">2</div>
+          <h3>컬러·캡션·시간 캡슐을<br>골라 묻어요</h3>
+          <p>그날의 기분을 8가지 컬러 중 하나로. 사진 한 장과 짧은 캡션, 그리고 다시 열어볼 시점까지 — 모두 선택입니다.</p>
+        </div>
+        <div class="step-phone">
+          <div class="phone-frame"><div class="screen"><img src="assets/screenshots/3.jpg" alt="컬러 선택, 시간 캡슐, 사진, 캡션 입력 화면"></div></div>
+        </div>
+      </div>
 
-  <hr>
-  <p style="color: #999; font-size: 14px;">© 2026 Echoes</p>
+      <div class="step">
+        <div class="step-text">
+          <div class="step-num">3</div>
+          <h3>정해둔 시점이 되면,<br>알림으로 도착해요</h3>
+          <p>며칠 뒤든, 1년 뒤든. 시간 캡슐이 열리는 그 순간 알림으로 받아, 어디서든 다시 들을 수 있어요. 묻은 본인만요.</p>
+        </div>
+        <div class="step-phone">
+          <div class="phone-frame"><div class="screen"><img src="assets/screenshots/4.jpg" alt="다이어리 재생 화면 - 사진과 음성 플레이어"></div></div>
+        </div>
+      </div>
 
-  </body>
-  </html>
+      <div class="step reverse">
+        <div class="step-text">
+          <div class="step-num">4</div>
+          <h3>모은 느낌을<br>장소로 검색해요</h3>
+          <p>경주, 제주, 출근길… 묻어둔 곳 이름으로 검색. 묻어둔 모든 느낌이 시간 순서대로 펼쳐집니다.</p>
+        </div>
+        <div class="step-phone">
+          <div class="phone-frame"><div class="screen"><img src="assets/screenshots/5.jpg" alt="장소 검색 화면 - 경주 키워드"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="colors">
+    <div class="container">
+      <span class="section-eyebrow">COLOR DOT</span>
+      <h2 style="font-size: clamp(28px, 4vw, 42px); line-height: 1.25; letter-spacing: -0.025em; font-weight: 800;">그날의 기분을<br>한 점의 컬러로</h2>
+      <p class="lead">8가지 컬러 중 하나면 충분합니다. 캡션도 사진도 선택이지만, 컬러 한 점은 그날의 기분으로 남아요.</p>
+      <div class="color-row" aria-hidden="true">
+        <span class="color-dot" style="background:#E8B43F"></span>
+        <span class="color-dot" style="background:#4F7BC8"></span>
+        <span class="color-dot" style="background:#95B7A2"></span>
+        <span class="color-dot" style="background:#C988B7"></span>
+        <span class="color-dot" style="background:#D38858"></span>
+        <span class="color-dot" style="background:#A85042"></span>
+        <span class="color-dot" style="background:#6E5D9A"></span>
+        <span class="color-dot" style="background:#D88A9E"></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="pro" style="background: var(--c-surface);">
+    <div class="container">
+      <div class="pro-card">
+        <span class="pro-badge">PRO</span>
+        <h2>더 많이 묻고, 더 깊게 남기기</h2>
+        <p class="lead">느낌 무제한 · 사진 첨부 · 시간 캡슐 무제한 · 광고 없음</p>
+        <div class="pro-table">
+          <table>
+            <thead>
+              <tr><th>기능</th><th>무료</th><th>Pro</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>느낌 묻기</td><td>20개</td><td>무제한</td></tr>
+              <tr><td>사진 첨부</td><td>—</td><td>지원</td></tr>
+              <tr><td>시간 캡슐</td><td>1개</td><td>무제한</td></tr>
+              <tr><td>광고 없음</td><td>—</td><td>지원</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="price-tiers">
+          <div class="price-tier">
+            <p class="label">월간</p>
+            <p class="amount">₩2,900<small>/월</small></p>
+          </div>
+          <div class="price-tier popular">
+            <p class="label">연간</p>
+            <p class="amount">₩23,000<small>/년</small></p>
+            <p class="note">월 ₩1,917 수준</p>
+          </div>
+          <div class="price-tier">
+            <p class="label">평생</p>
+            <p class="amount">₩49,000<small>한 번</small></p>
+            <p class="note">추가 결제 없음</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy-section" id="privacy">
+    <div class="container">
+      <div class="privacy-grid">
+        <div>
+          <span class="section-eyebrow">PRIVATE BY DEFAULT</span>
+          <h2>묻어둔 다이어리는<br>본인만 듣습니다</h2>
+          <p>Google 로그인으로 시작합니다. 묻은 다이어리는 본인만 들을 수 있고, 같은 계정으로 다시 로그인하면 어디서든 본인 데이터로 돌아와요.</p>
+        </div>
+        <div class="privacy-list">
+          <div class="privacy-item">
+            <span class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <div><h4>비공개 단방향</h4><p>묻은 사람 외 누구에게도 공개되지 않습니다.</p></div>
+          </div>
+          <div class="privacy-item">
+            <span class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            <div><h4>Google 로그인으로 시작</h4><p>안전한 보관과 동기화를 위해 Google 로그인이 필요합니다. 가입은 한 번이면 끝.</p></div>
+          </div>
+          <div class="privacy-item">
+            <span class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7a5 5 0 1 1 1.7-9.7"/><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/></svg></span>
+            <div><h4>Google 계정 백업</h4><p>같은 Google 계정으로 로그인하면 다른 기기에서도 본인 데이터가 그대로 돌아와요.</p></div>
+          </div>
+          <div class="privacy-item">
+            <span class="icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+            <div><h4>투명한 데이터 정책</h4><p>수집·이용 목적과 보관기간을 <a href="privacy.html">개인정보처리방침</a>에 모두 공개합니다.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="container" style="position: relative; z-index: 1;">
+      <h2>그 자리에 두고 온 마음을<br>다시 만나러 가요</h2>
+      <p>출시 준비 중입니다. 출시되면 메일로 알려드릴게요.</p>
+      <div class="cta-row">
+        <a href="mailto:echoes.diary.contact@gmail.com?subject=%EC%B6%9C%EC%8B%9C%20%EC%95%8C%EB%A6%BC%20%EB%B0%9B%EA%B8%B0" class="btn btn-primary">출시 알림 받기</a>
+        <a href="mailto:echoes.diary.contact@gmail.com" class="btn btn-ghost">문의하기</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-row">
+        <span class="footer-brand">여긴 어땠지?<small>Echoes</small></span>
+        <div class="footer-links">
+          <a href="#features">기능</a>
+          <a href="#how">사용법</a>
+          <a href="#pro">Pro</a>
+          <a href="privacy.html">개인정보처리방침</a>
+          <a href="mailto:echoes.diary.contact@gmail.com">문의</a>
+        </div>
+      </div>
+      <p class="footer-meta">© 2026 Echoes · 1인 개발 (개인) · echoes.diary.contact@gmail.com</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const header = document.getElementById('siteHeader');
+      let ticking = false;
+      function update(){
+        if (window.scrollY > 8) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+        ticking = false;
+      }
+      window.addEventListener('scroll', function(){
+        if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+    })();
+  </script>
+
+</body>
+</html>
